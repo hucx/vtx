@@ -1,9 +1,11 @@
 {
   "name": "vttx",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "XML templating engine",
   "main": "dist/instance.js",
-  "files": ["dist/*.js"],
+  "files": [
+    "dist/*.js"
+  ],
   "scripts": {
     "build": "tsc",
     "test": "jest"
