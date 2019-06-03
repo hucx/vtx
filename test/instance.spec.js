@@ -1,6 +1,6 @@
-const VTX = require('../dist/instance').default
+const VTTX = require('../dist/instance').default
 
-const instance = new VTX()
+const instance = new VTTX()
 
 describe('VTX', () => {
   describe('calls render functions', () => {

@@ -1,21 +1,21 @@
-# VTX
+# VTTX
 
-VTX is a templating engine for XML documents. It is based on a similar syntax
+VTTX is a templating engine for XML documents. It is based on a similar syntax
 to Vue templates. It's like a static version of Vue, but it can be used for
 any XML document, not just HTML.
 
 ## Installation
 
 ```javascript
-npm install --save vtx
+npm install --save VTTX
 ```
 
 ## Usage
 
-Import VTX by whichever means necessary.
+Import VTTX by whichever means necessary.
 
 ```javascript
-import VTX from 'vtx'
+import VTTX from 'VTTX'
 ```
 
 Use `{{ delimiters }}` to interpolate values into a template
@@ -29,13 +29,13 @@ Use `{{ delimiters }}` to interpolate values into a template
 Templates need to be registered before they can be used.
 
 ```javascript
-VTX.register('myCoolTemplate', '/path/to/template')
+VTTX.register('myCoolTemplate', '/path/to/template')
 ```
 
 Render a template by providing a name and some data
 
 ```javascript
-VTX.render('myCoolTemplate', { foo: 'bar' })
+VTTX.render('myCoolTemplate', { foo: 'bar' })
 ```
 
 Templates render with interpolated text
@@ -110,7 +110,7 @@ Please make sure to update tests as appropriate.
 
 ## Acknowledgements
 
-VTX is based on the Vue template compiler. The basic architecture and a few
+VTTX is based on the Vue template compiler. The basic architecture and a few
 functions are the same, but most of the code is original.
 
 ## License

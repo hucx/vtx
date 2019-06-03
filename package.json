@@ -1,5 +1,5 @@
 {
-  "name": "vtx",
+  "name": "vttx",
   "version": "0.1.0",
   "description": "XML templating engine",
   "main": "dist/instance.js",

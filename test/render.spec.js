@@ -1,5 +1,5 @@
 const { createElement, renderList, renderPartial, templateMap } = require('../dist/render')
-const VTX = require('../dist/instance').default
+const VTTX = require('../dist/instance').default
 
 describe('render functions', () => {
   describe('createElement', () => {
@@ -30,13 +30,13 @@ describe('render functions', () => {
 
   describe('renderPartial', () => {
     it('renders a partial', () => {
-      const vtx = new VTX('testThing')
+      const vtx = new VTTX('testThing')
       vtx._render = function ({ _c, _l, _p }) {return _c('a')}
       expect(renderPartial('testThing')).toBe('<a></a>')
     })
 
     it('renders a partial with data', () => {
-      const vtx = new VTX('testThing2')
+      const vtx = new VTTX('testThing2')
       vtx._render = function ({ _c, _l, _p }, { foo }) {return _c('a',[foo])}
       expect(renderPartial('testThing2', { foo: 'bar' })).toBe('<a>bar</a>')
     })
