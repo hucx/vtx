@@ -27,21 +27,21 @@ describe('code gen', () => {
   it('generates tag with text', () => {
     assertCodegen(
       '<div>Hello World!</div>',
-      `_c('div',['Hello World!'])`
+      `_c('div',["Hello World!"])`
     )
   })
 
   it('generates tag with a child tag', () => {
     assertCodegen(
       '<div><p>Hi</p></div>',
-      `_c('div',[_c('p',['Hi'])])`
+      `_c('div',[_c('p',["Hi"])])`
     )
   })
 
   it('generates tag with a child tag that has attributes', () => {
     assertCodegen(
       '<div><p class="foo">Hi</p></div>',
-      `_c('div',[_c('p',{attrs:[{name:'class',value:'foo'}]},['Hi'])])`
+      `_c('div',[_c('p',{attrs:[{name:'class',value:'foo'}]},["Hi"])])`
     )
   })
 
@@ -55,7 +55,7 @@ describe('code gen', () => {
   it('generates tag with child tags', () => {
     assertCodegen(
       '<div><p>Hello</p><p>World!</p></div>',
-      `_c('div',[_c('p',['Hello']),_c('p',['World!'])])`
+      `_c('div',[_c('p',["Hello"]),_c('p',["World!"])])`
     )
   })
 
@@ -76,28 +76,28 @@ describe('code gen', () => {
   it('generates v-if directive', () => {
     assertCodegen(
       '<div><p v-if="show">hello</p></div>',
-      `_c('div',[(show)?_c('p',['hello']):''])`
+      `_c('div',[(show)?_c('p',["hello"]):''])`
     )
   })
 
   it('generates v-if directive with other tags', () => {
     assertCodegen(
       '<div><p v-if="show">Hello</p><p>World!</p></div>',
-      `_c('div',[(show)?_c('p',['Hello']):'',_c('p',['World!'])])`
+      `_c('div',[(show)?_c('p',["Hello"]):'',_c('p',["World!"])])`
     )
   })
 
   it('generates v-if and v-else directive', () => {
     assertCodegen(
       '<div><p v-if="show">hello</p><p v-else>goodbye</p></div>',
-      `_c('div',[(show)?_c('p',['hello']):_c('p',['goodbye'])])`
+      `_c('div',[(show)?_c('p',["hello"]):_c('p',["goodbye"])])`
     )
   })
   
   it('generates v-if, v-else-if and v-else directive', () => {
     assertCodegen(
       '<div><p v-if="show === 1">hello</p><p v-else-if="show === 2">maybe</p><p v-else>goodbye</p></div>',
-      `_c('div',[(show === 1)?_c('p',['hello']):(show === 2)?_c('p',['maybe']):_c('p',['goodbye'])])`
+      `_c('div',[(show === 1)?_c('p',["hello"]):(show === 2)?_c('p',["maybe"]):_c('p',["goodbye"])])`
     )
   })
 })

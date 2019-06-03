@@ -162,7 +162,7 @@ function generateTemplate (node: ASTNode): string {
 
 function generateText (node: ASTNode) {
   const txt = parseText(node.text)
-  if (!txt) return `'${node.text}'`
+  if (!txt) return JSON.stringify(node.text)
   return `${txt.expression}`
 }
 

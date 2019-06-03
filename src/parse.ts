@@ -145,10 +145,13 @@ export function parseDocument (source: string): ASTNode {
     },
     CHARACTER_DATA (char: string) {
       if (char === '\'') {
+        charData += char
         state = 'SINGLE_QUOTES'
       } else if (char === '"') {
+        charData += char
         state = 'DOUBLE_QUOTES'
       } else if (char === '`') {
+        charData += char
         state = 'BACK_TICKS'
       } else if (char === '<') {
         addElement({ type: 'text', text: charData })
