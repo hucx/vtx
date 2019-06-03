@@ -1,0 +1,54 @@
+{
+  "singleEmptyTag": {
+    "type": "root",
+    "elements": [
+      { "type": "element", "name": "a" }
+    ] 
+  },
+
+  "singleEmptyTagWithAttrs": {
+    "type": "root",
+    "elements": [
+      {
+        "type": "element",
+        "name": "a",
+        "attributes": [
+          { "name": "v-custom", "value": null },
+          { "name": "class", "value": "foo" }
+        ]
+      }
+    ] 
+  },
+
+  "tagWithChildElements": {
+    "type": "root",
+    "elements": [
+      {
+        "type": "element",
+        "name": "a",
+        "attributes": [
+          { "name": "v-custom", "value": null },
+          { "name": "class", "value": "foo" }
+        ],
+        "elements": [
+          { "type": "element", "name": "b" },
+          {
+            "type": "element",
+            "name": "c",
+            "attributes": [
+              { "name": "v-else", "value": null }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
+  "doctype": {
+    "type": "root",
+    "elements": [
+      { "type": "doctype", "value": "crumpets" },
+      { "type": "element", "name": "a" }
+    ]
+  }
+}
