@@ -40,10 +40,6 @@ function _generate (node: ASTNode): string {
 }
 
 function generateElement (node: ASTNode): string {
-  if (node.name in templateMap) {
-    return generatePartial(node)
-  }
-
   if (node.directives) {
     if (node.directives.for) {
       if (!node.directives.for.processed) {
@@ -58,14 +54,27 @@ function generateElement (node: ASTNode): string {
 
   let result = `_c('${node.name}'`
 
+  let attrs, bind
+  if (node.directives) {
+    if (node.directives.bind) bind = node.directives.bind
+  }
   if (node.attributes) {
-    if (Array.isArray(node.attributes) && node.attributes.length > 0) {
+    if (node.attributes.length) attrs = node.attributes
+  }
+
+  if (attrs || bind) {
+    let optsArr = []
+    if (attrs) {
       let arr: string[] = []
-      node.attributes.forEach(a => {
+      attrs.forEach(a => {
         arr.push(`{name:'${a.name}',value:'${a.value}'}`)
       })
-      result += `,{attrs:[${arr.join(',')}]}`
+      optsArr.push(`attrs:[${arr.join(',')}]`)
     }
+    if (bind) {
+      optsArr.push(`bind:${bind.exp}`)
+    }
+    result += `,{${optsArr.join(',')}}`
   }
 
   if (node.elements) {
@@ -193,16 +202,15 @@ export function parseText (text: string): ParseTextResult {
     tokens: rawTokens
   }
 }
-
-function generatePartial (node) {
-  let result = `_p('${node.name}'`
-  if (node.directives) {
-    let bind = node.directives.bind
-    if (bind) {
-      result += ','
-      result += bind.exp
-    }
-  }
-  result += ')'
-  return result
-}
+// function generatePartial (node) {
+//   let result = `_p('${node.name}'`
+//   if (node.directives) {
+//     let bind = node.directives.bind
+//     if (bind) {
+//       result += ','
+//       result += bind.exp
+//     }
+//   }
+//   result += ')'
+//   return result
+// }

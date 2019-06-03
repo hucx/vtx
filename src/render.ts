@@ -2,7 +2,8 @@ import { kebabCase } from 'lodash'
 
 type CreateElementOptions = {
   attrs?: object[],
-  value?: string
+  value?: string,
+  bind?: object
 }
 
 const renderFns = {
@@ -42,8 +43,13 @@ export function createElement (
   let children: string | string[] = args[1]
   
   if (args.length === 1 && Array.isArray(args[0])) {
-    options = null
+    options = undefined
     children = args[0]
+  }
+
+  if (tag in templateMap) {
+    let locals = options ? options.bind : undefined
+    return templateMap[tag].render(locals)
   }
 
   switch (tag) {

@@ -45,6 +45,13 @@ describe('code gen', () => {
     )
   })
 
+  it('generates tag with a child tag that has binding', () => {
+    assertCodegen(
+      '<div><cool-list v-bind="{ items }" /></div>',
+      `_c('div',[_c('cool-list',{bind:{ items }})])`
+    )
+  })
+
   it('generates tag with child tags', () => {
     assertCodegen(
       '<div><p>Hello</p><p>World!</p></div>',

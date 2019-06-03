@@ -29,13 +29,17 @@ Use `{{ delimiters }}` to interpolate values into a template
 Templates need to be registered before they can be used.
 
 ```javascript
-VTTX.register('myCoolTemplate', '/path/to/template')
+VTTX.register('myCoolTemplate', 'template source')
+// or
+const template = VTTX.register('myCoolTemplate', 'template source')
 ```
 
-Render a template by providing a name and some data
+Render a template by providing a name and some data to `VTTX.render` or call
+the render function on the template directly
 
 ```javascript
 VTTX.render('myCoolTemplate', { foo: 'bar' })
+template.render({ foo: 'bar' })
 ```
 
 Templates render with interpolated text

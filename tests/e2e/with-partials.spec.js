@@ -8,10 +8,8 @@ describe('template rendering with partials', () => {
     const partial = readFileSync(join(__dirname, '../templates/partials/styles.html'), 'utf8')
     const generated = readFileSync(join(__dirname, '../templates/template-with-partial-gen.html'), 'utf8')
     
-    const i = new VTTX('simple')
-    const p = new VTTX('docStyles')
-    i._render = VTTX.compile(template)
-    p._render = VTTX.compile(partial)
+    const i = VTTX.register('simple', template)
+    const p = VTTX.register('docStyles', partial)
     
     expect(i.render()).toBe(generated)
   })
@@ -21,10 +19,8 @@ describe('template rendering with partials', () => {
     const partial = readFileSync(join(__dirname, '../templates/partials/items.html'), 'utf8')
     const generated = readFileSync(join(__dirname, '../templates/documents/invoice-gen.html'), 'utf8')
     
-    const i = new VTTX('invoice')
-    const p = new VTTX('lineItems')
-    i._render = VTTX.compile(template)
-    p._render = VTTX.compile(partial)
+    const i = VTTX.register('invoice', template)
+    VTTX.register('lineItems', partial)
     
     expect(i.render({
       items: [

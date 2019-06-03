@@ -30,15 +30,13 @@ describe('render functions', () => {
 
   describe('renderPartial', () => {
     it('renders a partial', () => {
-      const vtx = new VTTX('testThing')
-      vtx._render = function ({ _c, _l, _p }) {return _c('a')}
-      expect(renderPartial('testThing')).toBe('<a></a>')
+      VTTX.register('partial', '<b></b>')
+      expect(createElement('partial')).toBe('<b></b>')
     })
 
     it('renders a partial with data', () => {
-      const vtx = new VTTX('testThing2')
-      vtx._render = function ({ _c, _l, _p }, { foo }) {return _c('a',[foo])}
-      expect(renderPartial('testThing2', { foo: 'bar' })).toBe('<a>bar</a>')
+      VTTX.register('partial', '<b>{{ foo }}</b>')
+      expect(createElement('partial', { bind: { foo: 'bar' }})).toBe('<b>bar</b>')
     })
   })
   
