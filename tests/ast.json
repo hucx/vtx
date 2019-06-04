@@ -50,5 +50,28 @@
       { "type": "doctype", "value": "crumpets" },
       { "type": "element", "name": "a" }
     ]
+  },
+
+  "rootLevelComment": {
+    "type": "root",
+    "elements": [
+      { "type": "comment", "text": "crumpets" }
+    ]
+  },
+
+  "commentInsideTag": {
+    "type": "root",
+    "elements": [
+      {
+        "type": "element",
+        "name": "a",
+        "elements": [
+          {
+            "type": "comment",
+            "text": "crumpets"
+          }
+        ]
+      }
+    ]
   }
 }

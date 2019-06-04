@@ -59,6 +59,20 @@ describe('xml parse', () => {
       expectedAST.doctype
     )
   })
+
+  it('parses a root level comment', () => {
+    assertParse(
+      '<!-- crumpets -->',
+      expectedAST.rootLevelComment
+    )
+  })
+
+  it('parses a comment inside a tag', () => {
+    assertParse(
+      '<a><!-- crumpets --></a>',
+      expectedAST.commentInsideTag
+    )
+  })
 })
 
 describe('text parse', () => {

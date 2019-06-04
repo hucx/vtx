@@ -27,9 +27,9 @@ export function parseDocument (source: string): ASTNode {
   const tagNameRE = /[:\w-]/
   const attrValueRE = /[^<&"]/
   const whiteSpaceRE = /\s/
-  const result: ASTNode = { type: 'root', elements: [] }
-  let state = 'OUTSIDE'
-  let stack = []
+  let state = 'ROOT'
+  let root: ASTNode = { type: 'root', elements: []}
+  let stack: ASTNode[] = [root]
   let tagName = undefined
   let attrName = ''
   let attrValue = ''
@@ -40,15 +40,16 @@ export function parseDocument (source: string): ASTNode {
 
   // State machine for parsing an XML document.  This is pretty loose
   const states = {
-    OUTSIDE (char: string) {
+    ROOT (char: string) {
       if (char === '<') {
         state = 'TAG_BEGIN'
       } else if (whiteSpaceRE.test(char)) {
-        state = 'OUTSIDE'
+        return
       } else {
         throw new Error('bad document')
       }
     },
+
     TAG_BEGIN (char: string) {
       if (tagNameRE.test(char)) {
         tagName = ''
@@ -57,7 +58,9 @@ export function parseDocument (source: string): ASTNode {
         tagName = ''
         state = 'END_TAG'
       } else if (char === '!') {
-        if (source.substring[index + 3] === '!--') {
+        if (source.substring(index,index + 3) === '!--') {
+          index += 3
+          raw = ''
           state = 'COMMENT'
         } else {
           transitionTo('PROLOG')
@@ -68,24 +71,25 @@ export function parseDocument (source: string): ASTNode {
         throw new Error('bad start tag')
       }
     },
+
     START_TAG (char: string) {
       if (tagNameRE.test(char)) {
         tagName += char
       } else if (char === '>') {
-        stack.push({
+        addElement({
           type: 'element',
           name: tagName
         })
-        state = 'INSIDE_ELEMENT'
+        state = 'CONTENTS'
       } else if (whiteSpaceRE.test(char)) {
-        stack.push({
+        addElement({
           type: 'element',
           name: tagName
         })
         state = 'INSIDE_START_TAG'
       } else if (char === '/') {
         if (source[index + 1] === '>') {
-          stack.push({
+          addElement({
             type: 'element',
             name: tagName
           })
@@ -102,9 +106,10 @@ export function parseDocument (source: string): ASTNode {
         if (source[index + 1] === '>') { // Here we have an empty tag
           endElement()
           index++
+          state = 'CONTENTS'
         }
       } else if (char === '>') {
-        state = 'INSIDE_ELEMENT'
+        state = 'CONTENTS'
       }
     },
     ATTRIBUTE_NAME (char: string) {
@@ -118,7 +123,7 @@ export function parseDocument (source: string): ASTNode {
         state = 'INSIDE_START_TAG'
       } else if (char === '>') {
         addAttr({ name: attrName, value: null })
-        state = 'INSIDE_ELEMENT'
+        state = 'CONTENTS'
       }
     },
     ATTRIBUTE_VALUE (char: string) {
@@ -135,7 +140,7 @@ export function parseDocument (source: string): ASTNode {
         }
       }
     },
-    INSIDE_ELEMENT (char: string) {
+    CONTENTS (char: string) {
       if (char === '<') {
         state = 'TAG_BEGIN'
       } else if (nonWhiteSpaceRE.test(char)) {
@@ -190,7 +195,21 @@ export function parseDocument (source: string): ASTNode {
           throw new Error('mismatched tag names')
         }
         endElement()
+        state = 'CONTENTS'
       }
+    },
+    COMMENT (char: string) {
+      if (char === '-') {
+        if (source.substring(index, index + 3) === '-->') {
+          index += 2
+          addElement({ type: 'comment', text: raw.trim() })
+          endElement()
+          state = 'CONTENTS'
+          return
+        }
+      }
+
+      raw += char
     },
     PROLOG (char: string) {
       if (char === '!') {
@@ -206,7 +225,8 @@ export function parseDocument (source: string): ASTNode {
         raw += char
       } else if (char === '>') {
         addElement({ type: 'doctype', value: raw })
-        state = 'OUTSIDE'
+        endElement()
+        state = 'CONTENTS'
       }
     }
   }
@@ -216,9 +236,12 @@ export function parseDocument (source: string): ASTNode {
     index++
   }
   
-  if (state !== 'OUTSIDE') throw new Error ('unexpected EOF')
+  if (stack.length > 1) {
+    let el = stack.pop()
+    throw new Error(`unclosed ${el.name} tag`)
+  }
 
-  return result
+  return root
   
   function transitionTo (newState: string) {
     state = newState
@@ -234,25 +257,13 @@ export function parseDocument (source: string): ASTNode {
 
   // Push an element to the current element's elements array
   function addElement (child: ASTNode) {
-    if (stack.length === 0) {
-      result.elements.push(child)
-    } else {
-      let el = stack[stack.length - 1]
-      let elements = (el.elements || (el.elements = []))
-
-      elements.push(child)
-    }
+    let el = stack[stack.length - 1]; // Typescript needs this semi colon
+    (el.elements || (el.elements = [])).push(child)
+    stack.push(child)
   }
   
   function endElement () {
-    let el = stack.pop()
-    if (stack.length > 0) {
-      addElement(el)
-      state = 'INSIDE_ELEMENT'
-    } else {
-      result.elements.push(el)
-      state = 'OUTSIDE'
-    }
+    stack.pop()
   }
 }
 
