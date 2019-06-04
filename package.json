@@ -20,6 +20,9 @@
     "testEnvironment": "node"
   },
   "dependencies": {
+    "acorn": "^6.1.1",
+    "expression-eval": "^2.0.0",
+    "jsep": "^0.3.4",
     "lodash": "^4.17.11"
   }
 }

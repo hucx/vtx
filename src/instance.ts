@@ -2,6 +2,7 @@ import { parseDocument } from './parse'
 import { process } from './process'
 import { generate } from './code-gen'
 import renderFns, { templateMap } from './render'
+import { parseExpression } from './expression-parser'
 
 export default class VTTX {
   name: string
@@ -29,6 +30,7 @@ export default class VTTX {
   static compile(source: string): Function {
     const ast = parseDocument(source)
     process(ast)
-    return new Function('{_c,_l,_p}', 'local', `with(local){return ${generate(ast.elements)}}`)
+    const code = generate(ast.elements)
+    return new Function('{_c,_l,_p}', parseExpression(code), `return ${code}`)
   }
 }
