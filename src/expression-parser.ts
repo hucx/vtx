@@ -51,6 +51,7 @@ export function parseExpression (exp: string): string {
   }
 
   function recordRef(ref: string) {
+    if (result.findIndex(e => e === ref) > -1) return 
     if (ref[0] !== '_') result.push(ref)
   }
   
