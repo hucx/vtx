@@ -13,7 +13,15 @@ export default class VTTX {
   }
 
   render (data: object = {}): string {
-    return this._render(renderFns, data)
+    let result
+
+    try {
+      result = this._render(renderFns, data)
+    } catch (err) {
+      err.message += ` : rendering ${this.name}`
+    }
+
+    return result
   }
   
   static register (name: string, source: string) {
