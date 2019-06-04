@@ -1,7 +1,7 @@
 import { parseDocument } from './parse'
 import { process } from './process'
 import { generate } from './code-gen'
-import renderFns, { templateMap } from './render'
+import renderFns, { templateMap, toFunction } from './render'
 import { parseExpression } from './expression-parser'
 
 export default class VTTX {
@@ -18,7 +18,14 @@ export default class VTTX {
   
   static register (name: string, source: string) {
     const i = new VTTX(name)
-    i._render = VTTX.compile(source)
+
+    try {
+      i._render = VTTX.compile(source)
+    } catch (err) {
+      err.message += ` :compiling template`
+      throw err
+    }
+
     templateMap[name] = i
     return i
   }
@@ -31,6 +38,6 @@ export default class VTTX {
     const ast = parseDocument(source)
     process(ast)
     const code = generate(ast.elements)
-    return new Function('{_c,_l,_p}', parseExpression(code), `return ${code}`)
+    return toFunction(parseExpression(code), code)
   }
 }

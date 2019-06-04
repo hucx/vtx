@@ -14,6 +14,17 @@ const renderFns = {
 
 export default renderFns
 
+export function toFunction (local, code) {
+  let result
+  try {
+    result = new Function ('{ _c, _l, _p }', local, `return ${code}`)
+  } catch (err) {
+    err.message += ':in create render function'
+    throw err
+  }
+  return result
+}
+
 // templateMap allows a value to be referenced by either camel or kebabCase
 export const templateMap = new Proxy ({}, {
   get (obj, prop): any {
