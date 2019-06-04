@@ -146,7 +146,9 @@ function generateIfConditions (
   }
 
   return `(${directive.exp})?${
-    generateElement(node)
+    // wrap in a function to ensure that references are not exposed until
+    // necessary
+    `(()=>${generateElement(node)})()`
   }:${
     directive.else ? generateIf(directive.else) : '\'\''
   }`
