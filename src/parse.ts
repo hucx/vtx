@@ -160,6 +160,7 @@ export function parseDocument (source: string): ASTNode {
         state = 'BACK_TICKS'
       } else if (char === '<') {
         addElement({ type: 'text', text: charData })
+        endElement()
         state = 'TAG_BEGIN'
       } else if (char === '\n') {
         charData += char

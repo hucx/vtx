@@ -44,6 +44,33 @@
     ]
   },
 
+  "tagWithChildElementsAndCharacterData": {
+    "type": "root",
+    "elements": [
+      {
+        "type": "element",
+        "name": "a",
+        "attributes": [
+          { "name": "v-custom", "value": null },
+          { "name": "class", "value": "foo" }
+        ],
+        "elements": [
+          { "type": "element", "name": "b" },
+          {
+            "type": "element",
+            "name": "c",
+            "elements": [
+              { "type": "text", "text": "Hi"}
+            ],
+            "attributes": [
+              { "name": "v-else", "value": null }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+
   "doctype": {
     "type": "root",
     "elements": [

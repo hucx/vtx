@@ -47,6 +47,13 @@ describe('xml parse', () => {
     )
   })
 
+  it('parses a tag with child elements and character data', () => {
+    assertParse(
+      '<a v-custom class="foo"><b /><c v-else>Hi</c></a>',
+      expectedAST.tagWithChildElementsAndCharacterData
+    )
+  })
+
   it('throws', () => {
     assertThrow(
       '<a/></a>'
