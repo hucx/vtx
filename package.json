@@ -1,6 +1,6 @@
 {
   "name": "vttx",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "XML templating engine",
   "main": "dist/instance.js",
   "files": [
